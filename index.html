@@ -206,7 +206,7 @@
   }
   .service{
     background:var(--paper); border:1px solid var(--line); border-radius:16px;
-    padding:28px 26px;
+    padding:28px 26px; position:relative;
     box-shadow:0 1px 3px rgba(36,29,22,.05);
     transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease;
   }
@@ -223,6 +223,28 @@
   .service:nth-child(3):hover{border-color:var(--code-sage);}
   .service:nth-child(4):hover{border-color:var(--code-blue);}
   .service-expandable{cursor:pointer;}
+  .promo-badge{
+    position:absolute; top:-12px; right:22px;
+    background:var(--terracotta); color:var(--cream);
+    font-family:'JetBrains Mono', monospace; font-size:11px; font-weight:500;
+    letter-spacing:.06em; text-transform:uppercase;
+    padding:6px 13px; border-radius:100px;
+    display:flex; align-items:center; gap:6px;
+    box-shadow:0 6px 16px rgba(204,120,92,.4);
+  }
+  .promo-badge::before{
+    content:''; width:6px; height:6px; border-radius:50%; background:var(--cream);
+    animation:pulse 1.8s ease-in-out infinite;
+  }
+  .btn-primary.btn-promo{
+    background:var(--terracotta);
+    animation:promo-pulse 2.2s ease-in-out infinite;
+  }
+  .btn-primary.btn-promo:hover{background:var(--terracotta-dark);}
+  @keyframes promo-pulse{
+    0%, 100%{box-shadow:0 0 0 0 rgba(204,120,92,.5);}
+    50%{box-shadow:0 0 0 9px rgba(204,120,92,0);}
+  }
   .service-top{
     display:flex; align-items:center; justify-content:space-between;
     margin-bottom:18px;
@@ -516,6 +538,52 @@
     border-top:1px solid #382f24;
   }
   footer a{color:var(--terracotta);}
+  .footer-contact{
+    display:flex; justify-content:center; align-items:center; gap:28px;
+    flex-wrap:wrap; margin-bottom:18px;
+  }
+  .footer-contact a{
+    display:flex; align-items:center; gap:8px;
+    color:var(--cream); text-decoration:none; font-size:13px;
+    transition:color .2s ease;
+  }
+  .footer-contact a:hover{color:var(--terracotta);}
+  .footer-contact img, .footer-contact svg{width:18px; height:18px; flex-shrink:0;}
+
+  /* ---------- PRIVACY / RGPD ---------- */
+  .privacy-section{
+    max-width:640px; margin:0 auto; padding:48px 28px 8px; text-align:center;
+    background:var(--ink); color:#c9bfae;
+  }
+  .privacy-section h4{
+    font-family:'Fraunces', serif; font-weight:600; font-size:16px; color:var(--cream);
+    margin-bottom:10px;
+  }
+  .privacy-section p{
+    font-size:12.5px; line-height:1.65; margin-bottom:10px;
+  }
+  .privacy-section a{color:var(--terracotta);}
+  .consent-row{
+    margin-top:4px; display:flex; align-items:flex-start; gap:10px;
+  }
+  .consent-row input[type="checkbox"]{
+    width:16px; height:16px; margin-top:3px; flex-shrink:0; accent-color:var(--terracotta);
+  }
+  .consent-row label{
+    font-size:12.5px; line-height:1.5; color:#a99a83; text-transform:none;
+    letter-spacing:normal; font-family:'Inter', sans-serif;
+  }
+  .consent-row a{color:var(--terracotta);}
+  .wiz-consent-row{
+    margin-top:18px; display:flex; align-items:flex-start; gap:10px;
+  }
+  .wiz-consent-row input[type="checkbox"]{
+    width:16px; height:16px; margin-top:2px; flex-shrink:0; accent-color:var(--terracotta-dark);
+  }
+  .wiz-consent-row label{
+    font-size:12.5px; line-height:1.5; color:var(--ink-soft); font-family:'Inter', sans-serif;
+  }
+  .wiz-consent-row a{color:var(--terracotta-dark);}
 
   @media (max-width:560px){
     .hero-meta{gap:22px;}
@@ -563,6 +631,7 @@
 
 <section class="services">
   <div class="service service-expandable" data-need="Landing page" id="svc-landing">
+    <span class="promo-badge">✦ Promo</span>
     <div class="service-top">
       <div class="service-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
@@ -587,7 +656,7 @@
         <div class="service-step"><span class="step-num">04</span>Entrega</div>
       </div>
       <p class="service-speed">Trabajamos rápido y sin complicarnos: <span>lista en días, no semanas.</span></p>
-      <button class="btn btn-primary service-cta" data-need-cta="Landing page">Cuéntanos qué necesitas</button>
+      <button class="btn btn-primary btn-promo service-cta" data-need-cta="Landing page">Cuéntanos qué necesitas</button>
     </div>
   </div>
   <div class="service service-expandable" data-need="Página web" id="svc-web">
@@ -720,6 +789,11 @@
         <textarea id="project" name="message" placeholder="Cuéntanos brevemente tu proyecto..." required></textarea>
       </div>
 
+      <div class="consent-row">
+        <input type="checkbox" id="consent" name="consent" required>
+        <label for="consent">He leído y acepto la <a href="#privacidad">política de privacidad</a>. Mis datos se usarán solo para responder a esta consulta.</label>
+      </div>
+
       <div class="submit-row">
         <button type="submit" class="btn-submit">Enviar</button>
         <span class="form-note">Respondemos en 24–48h.</span>
@@ -729,7 +803,25 @@
   </div>
 </section>
 
+<div class="privacy-section" id="privacidad">
+  <h4>Protección de datos</h4>
+  <p>Responsable: CulturClic (Fernando Benítez). Los datos que nos facilitas en estos formularios se usan únicamente para responder a tu consulta y gestionar la relación comercial derivada, conforme al Reglamento (UE) 2016/679 (RGPD).</p>
+  <p>Puedes ejercer tus derechos de acceso, rectificación, supresión y oposición escribiendo a <a href="mailto:hola@culturclic.com">hola@culturclic.com</a>. No compartimos tus datos con terceros salvo obligación legal.</p>
+</div>
+
 <footer>
+  <div class="footer-contact">
+    <a href="mailto:hola@culturclic.com">
+      <img id="footer-email-icon" alt="email">
+      hola@culturclic.com
+    </a>
+    <a href="tel:+34672907381">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 5c0-1 1-2 2-2h2l2 5-2 1.5c1 2.5 3 4.5 5.5 5.5L15 13l5 2v2c0 1-1 2-2 2C10.5 19 4 12.5 4 5Z"/>
+      </svg>
+      +34 672 90 73 81
+    </a>
+  </div>
   &copy; 2026 CulturClic — diseño web y marketing digital, construido con código, no con plantillas.
 </footer>
 
@@ -935,6 +1027,8 @@
       <span>${slug}</span>
     </div>`).join('');
 
+  document.getElementById('footer-email-icon').src = ICONS['email'];
+
   // service cards: click anywhere on the card to expand/collapse
   document.querySelectorAll('.service-expandable').forEach(card => {
     const detail = card.querySelector('.service-detail');
@@ -1033,6 +1127,10 @@
         <div class="wiz-field"><label for="wiz-name">Nombre</label><input type="text" id="wiz-name" placeholder="Tu nombre"></div>
         <div class="wiz-field" style="margin-top:10px;"><label for="wiz-email">Email</label><input type="email" id="wiz-email" placeholder="tu@email.com"></div>
         <div class="wiz-field" style="margin-top:10px;"><label for="wiz-whatsapp">WhatsApp</label><input type="tel" id="wiz-whatsapp" placeholder="+34 600 000 000"></div>
+        <div class="wiz-consent-row">
+          <input type="checkbox" id="wiz-consent">
+          <label for="wiz-consent">He leído y acepto la <a href="#privacidad" target="_blank">política de privacidad</a>.</label>
+        </div>
       </div>
 
       <button class="btn btn-primary" id="wiz-submit">Enviar</button>
@@ -1045,7 +1143,7 @@
     return active ? active.dataset.value : null;
   }
 
-  function initLandingWizard() {
+  function initWizardToggles() {
     svcModalContent.querySelectorAll('[data-toggle-group]').forEach(group => {
       const groupName = group.getAttribute('data-toggle-group');
       group.querySelectorAll('.wiz-opt').forEach(opt => {
@@ -1054,24 +1152,37 @@
           opt.classList.add('active');
           if (groupName === 'design') {
             const isMedida = opt.dataset.value === 'a-medida';
-            document.getElementById('wiz-block-medida').style.display = isMedida ? '' : 'none';
-            document.getElementById('wiz-block-copiar').style.display = isMedida ? 'none' : '';
+            const bm = document.getElementById('wiz-block-medida');
+            const bc = document.getElementById('wiz-block-copiar');
+            if (bm) bm.style.display = isMedida ? '' : 'none';
+            if (bc) bc.style.display = isMedida ? 'none' : '';
           }
           if (groupName === 'formulario') {
-            document.getElementById('wiz-block-form-extra').style.display = opt.dataset.value === 'si' ? '' : 'none';
+            const fe = document.getElementById('wiz-block-form-extra');
+            if (fe) fe.style.display = opt.dataset.value === 'si' ? '' : 'none';
           }
         });
       });
     });
+  }
+
+  function initLandingWizard() {
+    initWizardToggles();
 
     document.getElementById('wiz-submit').addEventListener('click', async () => {
       const status = document.getElementById('wiz-status');
       const name = document.getElementById('wiz-name').value.trim();
       const email = document.getElementById('wiz-email').value.trim();
       const whatsapp = document.getElementById('wiz-whatsapp').value.trim();
+      const consent = document.getElementById('wiz-consent').checked;
 
       if (!name || !email || !whatsapp) {
         status.textContent = 'Completa nombre, email y WhatsApp.';
+        status.style.color = '#c96b52';
+        return;
+      }
+      if (!consent) {
+        status.textContent = 'Debes aceptar la política de privacidad.';
         status.style.color = '#c96b52';
         return;
       }
@@ -1118,12 +1229,197 @@
     });
   }
 
+  function buildWebsiteWizardHTML() {
+    return `
+      <div class="wiz-header">
+        <img src="${ICONS['pagina-web']}" alt="pagina-web">
+        <div>
+          <h3>¿Cómo quieres tu web?</h3>
+          <p>Cuanto más nos cuentes, más ajustada sale la propuesta.</p>
+        </div>
+      </div>
+
+      <div class="wiz-section">
+        <span class="wiz-label">Diseño</span>
+        <div class="wiz-toggle" data-toggle-group="design">
+          <button type="button" class="wiz-opt active" data-value="a-medida">A medida</button>
+          <button type="button" class="wiz-opt" data-value="copiar">Copiar un diseño</button>
+        </div>
+
+        <div class="wiz-field" id="wiz-block-medida" style="margin-top:14px;">
+          <ul class="wiz-questions">
+            <li>¿Cuál es el objetivo principal del sitio?</li>
+            <li>¿A quién va dirigido?</li>
+            <li>¿Ya tienes colores/tipografía de marca o lo montamos desde cero?</li>
+            <li>¿Alguna referencia que te guste?</li>
+          </ul>
+          <label for="wiz-medida-answer">Tu respuesta</label>
+          <textarea id="wiz-medida-answer" placeholder="Escribe aquí, con tus palabras..."></textarea>
+        </div>
+
+        <div class="wiz-field" id="wiz-block-copiar" style="margin-top:14px; display:none;">
+          <label for="wiz-copiar-link">Link de la web a copiar</label>
+          <input type="url" id="wiz-copiar-link" placeholder="https://...">
+        </div>
+      </div>
+
+      <div class="wiz-section">
+        <span class="wiz-label">Sobre tu web</span>
+        <ul class="wiz-questions">
+          <li>¿Cuántas páginas o secciones necesitas? (Inicio, Nosotros, Servicios, Contacto, Blog...)</li>
+          <li>¿Tienes el contenido (textos) listo o hay que redactarlo?</li>
+          <li>¿Necesitas dominio y hosting, o ya los tienes?</li>
+          <li>¿En cuántos idiomas la necesitas?</li>
+        </ul>
+        <div class="wiz-field">
+          <label for="wiz-web-answer">Tu respuesta</label>
+          <textarea id="wiz-web-answer" placeholder="Escribe aquí, con tus palabras..."></textarea>
+        </div>
+      </div>
+
+      <div class="wiz-section">
+        <div class="wiz-row-icon"><img src="${ICONS['video']}" alt="video"><span>¿Quieres video?</span></div>
+        <div class="wiz-toggle wiz-toggle-sm" data-toggle-group="video">
+          <button type="button" class="wiz-opt" data-value="si">Sí</button>
+          <button type="button" class="wiz-opt active" data-value="no">✕ No</button>
+        </div>
+      </div>
+
+      <div class="wiz-section">
+        <div class="wiz-row-icon"><img src="${ICONS['imagen']}" alt="imagen"><span>¿Quieres imágenes/fotos?</span></div>
+        <div class="wiz-toggle wiz-toggle-sm" data-toggle-group="imagen">
+          <button type="button" class="wiz-opt" data-value="si">Sí</button>
+          <button type="button" class="wiz-opt active" data-value="no">✕ No</button>
+        </div>
+      </div>
+
+      <div class="wiz-section">
+        <span class="wiz-label">¿Necesitas poder editarlo tú mismo? (gestor de contenidos)</span>
+        <div class="wiz-toggle wiz-toggle-sm" data-toggle-group="cms">
+          <button type="button" class="wiz-opt" data-value="si">Sí</button>
+          <button type="button" class="wiz-opt active" data-value="no">✕ No</button>
+        </div>
+      </div>
+
+      <div class="wiz-section">
+        <div class="wiz-row-icon"><img src="${ICONS['formulario']}" alt="formulario"><span>¿Llevará formulario de contacto?</span></div>
+        <div class="wiz-toggle wiz-toggle-sm" data-toggle-group="formulario">
+          <button type="button" class="wiz-opt active" data-value="si">Sí</button>
+          <button type="button" class="wiz-opt" data-value="no">✕ No</button>
+        </div>
+
+        <div id="wiz-block-form-extra" style="margin-top:16px;">
+          <span class="wiz-label">¿Se conecta a Web3Forms?</span>
+          <div class="wiz-toggle wiz-toggle-sm" data-toggle-group="web3forms">
+            <button type="button" class="wiz-opt active" data-value="si">Sí</button>
+            <button type="button" class="wiz-opt" data-value="no">No</button>
+          </div>
+          <div class="wiz-field" style="margin-top:14px;">
+            <label for="wiz-form-purpose">¿Para qué es el envío?</label>
+            <select id="wiz-form-purpose">
+              <option value="Leads">Leads</option>
+              <option value="Reservas / citas">Reservas / citas</option>
+              <option value="Contacto general">Contacto general</option>
+              <option value="Otro">Otro</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="wiz-section">
+        <span class="wiz-label">Tus datos</span>
+        <div class="wiz-field"><label for="wiz-name">Nombre</label><input type="text" id="wiz-name" placeholder="Tu nombre"></div>
+        <div class="wiz-field" style="margin-top:10px;"><label for="wiz-email">Email</label><input type="email" id="wiz-email" placeholder="tu@email.com"></div>
+        <div class="wiz-field" style="margin-top:10px;"><label for="wiz-whatsapp">WhatsApp</label><input type="tel" id="wiz-whatsapp" placeholder="+34 600 000 000"></div>
+        <div class="wiz-consent-row">
+          <input type="checkbox" id="wiz-consent">
+          <label for="wiz-consent">He leído y acepto la <a href="#privacidad" target="_blank">política de privacidad</a>.</label>
+        </div>
+      </div>
+
+      <button class="btn btn-primary" id="wiz-submit">Enviar</button>
+      <p id="wiz-status"></p>
+    `;
+  }
+
+  function initWebsiteWizard() {
+    initWizardToggles();
+
+    document.getElementById('wiz-submit').addEventListener('click', async () => {
+      const status = document.getElementById('wiz-status');
+      const name = document.getElementById('wiz-name').value.trim();
+      const email = document.getElementById('wiz-email').value.trim();
+      const whatsapp = document.getElementById('wiz-whatsapp').value.trim();
+      const consent = document.getElementById('wiz-consent').checked;
+
+      if (!name || !email || !whatsapp) {
+        status.textContent = 'Completa nombre, email y WhatsApp.';
+        status.style.color = '#c96b52';
+        return;
+      }
+      if (!consent) {
+        status.textContent = 'Debes aceptar la política de privacidad.';
+        status.style.color = '#c96b52';
+        return;
+      }
+
+      status.textContent = 'Enviando...';
+      status.style.color = 'var(--ink-soft)';
+
+      const design = getToggleValue('design');
+      const formulario = getToggleValue('formulario');
+      const payload = {
+        access_key: '77447d6b-9902-4e95-bde8-d14e3fed7375',
+        subject: 'Nueva web solicitada — CulturClic',
+        name, email, whatsapp,
+        diseno: design,
+        detalle_diseno: design === 'a-medida'
+          ? document.getElementById('wiz-medida-answer').value
+          : document.getElementById('wiz-copiar-link').value,
+        detalle_web: document.getElementById('wiz-web-answer').value,
+        video: getToggleValue('video'),
+        imagen: getToggleValue('imagen'),
+        gestor_contenidos: getToggleValue('cms'),
+        formulario: formulario,
+        conectado_web3forms: formulario === 'si' ? getToggleValue('web3forms') : 'N/A',
+        motivo_envio: formulario === 'si' ? document.getElementById('wiz-form-purpose').value : 'N/A'
+      };
+
+      try {
+        const res = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const result = await res.json();
+        if (result.success) {
+          status.textContent = '✓ Enviado. Gracias.';
+          status.style.color = 'var(--terracotta-dark)';
+          setTimeout(closeSvcModal, 1400);
+        } else {
+          status.textContent = 'Algo falló. Inténtalo de nuevo.';
+          status.style.color = '#c96b52';
+        }
+      } catch (err) {
+        status.textContent = 'Algo falló. Inténtalo de nuevo.';
+        status.style.color = '#c96b52';
+      }
+    });
+  }
+
   function openSvcModal(need) {
     if (need === 'Landing page') {
       svcModalBox.classList.add('modal-box-lg');
       svcModalContent.innerHTML = buildLandingWizardHTML();
       svcModal.classList.add('open');
       initLandingWizard();
+      return;
+    }
+    if (need === 'Página web') {
+      svcModalBox.classList.add('modal-box-lg');
+      svcModalContent.innerHTML = buildWebsiteWizardHTML();
+      svcModal.classList.add('open');
+      initWebsiteWizard();
       return;
     }
 
