@@ -354,6 +354,84 @@
   }
   .wiz-opt.active{background:var(--terracotta-dark); color:var(--cream); border-color:var(--terracotta-dark);}
   .wiz-questions{font-size:13px; color:var(--ink-soft); line-height:1.65; margin:0 0 10px 18px;}
+  .wiz-info-row{display:flex; align-items:center; gap:8px;}
+  .wiz-info-btn{
+    width:19px; height:19px; border-radius:50%; border:1px solid var(--terracotta-dark);
+    background:none; color:var(--terracotta-dark); font-family:'JetBrains Mono', monospace;
+    font-size:11px; font-weight:600; cursor:pointer; padding:0; line-height:1;
+    display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  }
+  .wiz-info-btn:hover{background:var(--terracotta-dark); color:var(--cream);}
+  .wiz-info-box{
+    margin-top:10px; padding:12px 14px; background:var(--cream); border-radius:10px;
+    font-size:12.5px; line-height:1.6; color:var(--ink-soft);
+  }
+  .wiz-info-box strong{color:var(--ink);}
+
+  .wiz-budget-box{
+    margin-top:22px; padding:22px 22px 20px; border-radius:14px;
+    background:var(--terracotta); text-align:center;
+  }
+  .wiz-budget-label{
+    display:inline-block; font-family:'JetBrains Mono', monospace; font-size:11px;
+    letter-spacing:.08em; text-transform:uppercase; color:var(--cream);
+    background:rgba(255,255,255,.18); padding:5px 13px; border-radius:100px;
+  }
+  .wiz-budget-question{
+    margin-top:12px; font-family:'Fraunces', serif; font-weight:600;
+    font-size:17px; color:#ffffff; line-height:1.3;
+  }
+  .wiz-budget-input{
+    margin-top:14px; width:100%; background:#ffffff; border:none;
+    border-radius:10px; padding:12px 14px; color:var(--ink);
+    font-family:'Inter', sans-serif; font-size:14px; text-align:center;
+    box-shadow:0 4px 14px rgba(0,0,0,.15);
+  }
+  .wiz-budget-input:focus{outline:2px solid var(--ink);}
+
+  /* ---------- INLINE CALENDAR ---------- */
+  .wiz-calendar{
+    background:var(--cream); border:1px solid var(--line); border-radius:12px;
+    padding:14px 16px 12px; max-width:280px;
+  }
+  .cal-header{
+    display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;
+  }
+  .cal-title{
+    font-family:'Fraunces', serif; font-weight:600; font-size:14px;
+    color:var(--ink); text-transform:capitalize;
+  }
+  .cal-nav{
+    background:none; border:none; color:var(--terracotta-dark); font-size:16px;
+    cursor:pointer; width:24px; height:24px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center; padding:0;
+    transition:background .15s ease;
+  }
+  .cal-nav:hover{background:rgba(204,120,92,.15);}
+  .cal-weekdays{
+    display:grid; grid-template-columns:repeat(7, 1fr); text-align:center;
+    font-family:'JetBrains Mono', monospace; font-size:10px; color:var(--ink-soft);
+    margin-bottom:4px;
+  }
+  .cal-grid{display:grid; grid-template-columns:repeat(7, 1fr); gap:2px;}
+  .cal-day{
+    aspect-ratio:1; display:flex; align-items:center; justify-content:center;
+    border:none; background:none; border-radius:8px;
+    font-family:'Inter', sans-serif; font-size:12.5px; color:var(--ink);
+    cursor:pointer; padding:0; transition:background .15s ease, color .15s ease;
+  }
+  .cal-day.empty{visibility:hidden; cursor:default;}
+  .cal-day.past{color:var(--line); cursor:not-allowed;}
+  .cal-day:hover:not(.past):not(.empty):not(.selected){background:rgba(204,120,92,.15);}
+  .cal-day.selected{background:var(--terracotta-dark); color:var(--cream); font-weight:600;}
+  .cal-footer{
+    margin-top:10px; display:flex; align-items:center; justify-content:space-between;
+    font-family:'JetBrains Mono', monospace; font-size:11px; color:var(--ink-soft);
+  }
+  .cal-clear{
+    background:none; border:none; color:var(--terracotta-dark); cursor:pointer;
+    font-size:11px; text-decoration:underline; padding:0;
+  }
   .wiz-field label{
     font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:.05em;
     text-transform:uppercase; color:var(--ink-soft); display:block; margin-bottom:6px;
@@ -1096,7 +1174,14 @@
       </div>
 
       <div class="wiz-section">
-        <div class="wiz-row-icon"><img src="${ICONS['video']}" alt="video"><span>¿Quieres video?</span></div>
+        <div class="wiz-field">
+          <label for="wiz-web-actual">¿Tienes página web actual? (si existe)</label>
+          <input type="url" id="wiz-web-actual" placeholder="https://tuweb.com (déjalo en blanco si no tienes)">
+        </div>
+      </div>
+
+      <div class="wiz-section">
+        <div class="wiz-row-icon"><img src="${ICONS['video']}" alt="video"><span>¿Quieres integrar un video en la landing?</span></div>
         <div class="wiz-toggle wiz-toggle-sm" data-toggle-group="video">
           <button type="button" class="wiz-opt" data-value="si">Sí</button>
           <button type="button" class="wiz-opt active" data-value="no">✕ No</button>
@@ -1104,10 +1189,18 @@
       </div>
 
       <div class="wiz-section">
-        <div class="wiz-row-icon"><img src="${ICONS['imagen']}" alt="imagen"><span>¿Quieres imágenes/fotos?</span></div>
+        <div class="wiz-row-icon"><img src="${ICONS['imagen']}" alt="imagen"><span>¿Quieres una galería de imágenes en la landing?</span></div>
         <div class="wiz-toggle wiz-toggle-sm" data-toggle-group="imagen">
           <button type="button" class="wiz-opt" data-value="si">Sí</button>
           <button type="button" class="wiz-opt active" data-value="no">✕ No</button>
+        </div>
+        <div id="wiz-block-imagen-extra" style="margin-top:14px; display:none;">
+          <span class="wiz-label">¿Qué formato prefieres?</span>
+          <div class="wiz-toggle wiz-toggle-sm" data-toggle-group="galeria-tipo">
+            <button type="button" class="wiz-opt active" data-value="Carrusel">Carrusel</button>
+            <button type="button" class="wiz-opt" data-value="Cuadrícula">Cuadrícula</button>
+            <button type="button" class="wiz-opt" data-value="No lo sé, propónmelo tú">No lo sé, propónmelo tú</button>
+          </div>
         </div>
       </div>
 
@@ -1119,21 +1212,38 @@
         </div>
 
         <div id="wiz-block-form-extra" style="margin-top:16px;">
-          <span class="wiz-label">¿Se conecta a Web3Forms?</span>
-          <div class="wiz-toggle wiz-toggle-sm" data-toggle-group="web3forms">
+          <div class="wiz-info-row">
+            <span class="wiz-label" style="margin-bottom:0;">¿Se conecta a Web3Forms?</span>
+            <button type="button" class="wiz-info-btn" id="wiz-web3forms-info" aria-label="¿Qué es Web3Forms?">?</button>
+          </div>
+          <div class="wiz-toggle wiz-toggle-sm" data-toggle-group="web3forms" style="margin-top:8px;">
             <button type="button" class="wiz-opt active" data-value="si">Sí</button>
             <button type="button" class="wiz-opt" data-value="no">No</button>
           </div>
+          <div id="wiz-web3forms-explain" class="wiz-info-box" style="display:none;">
+            Web3Forms es el servicio que recibe lo que la gente escribe en tu formulario y te lo manda directo al email, sin necesitar un servidor propio. El primer email de destino es <strong>gratis</strong>; a partir del segundo tiene un coste aproximado de <strong>8€/mes</strong>.
+          </div>
+
           <div class="wiz-field" style="margin-top:14px;">
-            <label for="wiz-form-purpose">¿Para qué es el envío?</label>
+            <label for="wiz-form-purpose">¿Qué quieres hacer con los datos que te llegan?</label>
             <select id="wiz-form-purpose">
-              <option value="Leads">Leads</option>
-              <option value="Reservas / citas">Reservas / citas</option>
-              <option value="Contacto general">Contacto general</option>
+              <option value="Leads">Leads — quiero la lista de contactos interesados para llamarles o escribirles yo</option>
+              <option value="Reservas / citas">Reservas / citas — la gente reserva directamente un hueco</option>
+              <option value="Contacto general">Contacto general — dudas o consultas, sin más</option>
               <option value="Otro">Otro</option>
             </select>
           </div>
+          <div class="wiz-field" style="margin-top:10px;">
+            <label for="wiz-form-purpose-detalle">Cuéntanos un poco más (opcional)</label>
+            <textarea id="wiz-form-purpose-detalle" placeholder="Cualquier detalle extra sobre qué debe pasar cuando alguien rellena el formulario..."></textarea>
+          </div>
         </div>
+      </div>
+
+      <div class="wiz-budget-box">
+        <span class="wiz-budget-label">💰 Presupuesto</span>
+        <p class="wiz-budget-question">¿Cuánto quieres gastar o qué presupuesto tienes pensado?</p>
+        <input type="text" id="wiz-presupuesto" class="wiz-budget-input" placeholder="Ej: 300-500€, o &quot;aún no lo tengo claro&quot;">
       </div>
 
       <div class="wiz-section">
@@ -1141,6 +1251,10 @@
         <div class="wiz-field"><label for="wiz-name">Nombre</label><input type="text" id="wiz-name" placeholder="Tu nombre"></div>
         <div class="wiz-field" style="margin-top:10px;"><label for="wiz-email">Email</label><input type="email" id="wiz-email" placeholder="tu@email.com"></div>
         <div class="wiz-field" style="margin-top:10px;"><label for="wiz-whatsapp">WhatsApp</label><input type="tel" id="wiz-whatsapp" placeholder="+34 600 000 000"></div>
+        <div class="wiz-field" style="margin-top:10px;">
+          <label>¿Tienes fecha límite para lanzarla? (opcional)</label>
+          <div class="wiz-calendar" id="wiz-calendar-deadline"></div>
+        </div>
         <div class="wiz-consent-row">
           <input type="checkbox" id="wiz-consent">
           <label for="wiz-consent">He leído y acepto la <a href="#privacidad" target="_blank">política de privacidad</a>.</label>
@@ -1150,6 +1264,81 @@
       <button class="btn btn-primary" id="wiz-submit">Enviar</button>
       <p id="wiz-status"></p>
     `;
+  }
+
+  const CAL_MONTHS = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  const CAL_MONTHS_SHORT = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+
+  function calFormatDisplay(iso) {
+    const [y, m, d] = iso.split('-');
+    return `${parseInt(d, 10)} ${CAL_MONTHS_SHORT[parseInt(m, 10) - 1]} ${y}`;
+  }
+
+  function renderCalendar(containerId, viewDate) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    const year = viewDate.getFullYear();
+    const month = viewDate.getMonth();
+    const firstDay = new Date(year, month, 1);
+    const startWeekday = (firstDay.getDay() + 6) % 7; // lunes = 0
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const today = new Date(); today.setHours(0, 0, 0, 0);
+    const selected = container.dataset.value || '';
+
+    let cells = '';
+    for (let i = 0; i < startWeekday; i++) cells += `<span class="cal-day empty"></span>`;
+    for (let d = 1; d <= daysInMonth; d++) {
+      const dateObj = new Date(year, month, d);
+      const iso = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+      const isPast = dateObj < today;
+      const isSelected = iso === selected;
+      cells += `<button type="button" class="cal-day${isPast ? ' past' : ''}${isSelected ? ' selected' : ''}" data-date="${iso}" ${isPast ? 'disabled' : ''}>${d}</button>`;
+    }
+
+    container.innerHTML = `
+      <div class="cal-header">
+        <button type="button" class="cal-nav" data-nav="-1">‹</button>
+        <span class="cal-title">${CAL_MONTHS[month]} ${year}</span>
+        <button type="button" class="cal-nav" data-nav="1">›</button>
+      </div>
+      <div class="cal-weekdays"><span>L</span><span>M</span><span>X</span><span>J</span><span>V</span><span>S</span><span>D</span></div>
+      <div class="cal-grid">${cells}</div>
+      <div class="cal-footer">
+        <span>${selected ? 'Elegida: ' + calFormatDisplay(selected) : 'Sin fecha elegida'}</span>
+        ${selected ? '<button type="button" class="cal-clear">Quitar</button>' : ''}
+      </div>
+    `;
+
+    container.querySelectorAll('.cal-nav').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const delta = parseInt(btn.dataset.nav, 10);
+        const newDate = new Date(year, month + delta, 1);
+        container._viewDate = newDate;
+        renderCalendar(containerId, newDate);
+      });
+    });
+    container.querySelectorAll('.cal-day:not(.empty):not(.past)').forEach(btn => {
+      btn.addEventListener('click', () => {
+        container.dataset.value = container.dataset.value === btn.dataset.date ? '' : btn.dataset.date;
+        renderCalendar(containerId, container._viewDate || viewDate);
+      });
+    });
+    const clearBtn = container.querySelector('.cal-clear');
+    if (clearBtn) {
+      clearBtn.addEventListener('click', () => {
+        container.dataset.value = '';
+        renderCalendar(containerId, container._viewDate || viewDate);
+      });
+    }
+  }
+
+  function initCalendar(containerId) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    container.dataset.value = '';
+    const now = new Date();
+    container._viewDate = now;
+    renderCalendar(containerId, now);
   }
 
   function getToggleValue(group) {
@@ -1175,13 +1364,26 @@
             const fe = document.getElementById('wiz-block-form-extra');
             if (fe) fe.style.display = opt.dataset.value === 'si' ? '' : 'none';
           }
+          if (groupName === 'imagen') {
+            const ie = document.getElementById('wiz-block-imagen-extra');
+            if (ie) ie.style.display = opt.dataset.value === 'si' ? '' : 'none';
+          }
         });
       });
     });
+
+    const web3formsInfoBtn = svcModalContent.querySelector('#wiz-web3forms-info');
+    if (web3formsInfoBtn) {
+      web3formsInfoBtn.addEventListener('click', () => {
+        const box = document.getElementById('wiz-web3forms-explain');
+        box.style.display = box.style.display === 'none' ? '' : 'none';
+      });
+    }
   }
 
   function initLandingWizard() {
     initWizardToggles();
+    initCalendar('wiz-calendar-deadline');
 
     document.getElementById('wiz-submit').addEventListener('click', async () => {
       const status = document.getElementById('wiz-status');
@@ -1206,19 +1408,25 @@
 
       const design = getToggleValue('design');
       const formulario = getToggleValue('formulario');
+      const imagen = getToggleValue('imagen');
       const payload = {
         access_key: '77447d6b-9902-4e95-bde8-d14e3fed7375',
         subject: 'Nueva landing solicitada — CulturClic',
         name, email, whatsapp,
+        pagina_web_actual: document.getElementById('wiz-web-actual').value || 'N/A',
         diseno: design,
         detalle_diseno: design === 'a-medida'
           ? document.getElementById('wiz-medida-answer').value
           : document.getElementById('wiz-copiar-link').value,
         video: getToggleValue('video'),
-        imagen: getToggleValue('imagen'),
+        imagen: imagen,
+        tipo_galeria: imagen === 'si' ? getToggleValue('galeria-tipo') : 'N/A',
         formulario: formulario,
         conectado_web3forms: formulario === 'si' ? getToggleValue('web3forms') : 'N/A',
-        motivo_envio: formulario === 'si' ? document.getElementById('wiz-form-purpose').value : 'N/A'
+        motivo_envio: formulario === 'si' ? document.getElementById('wiz-form-purpose').value : 'N/A',
+        motivo_envio_detalle: formulario === 'si' ? document.getElementById('wiz-form-purpose-detalle').value : 'N/A',
+        fecha_limite: document.getElementById('wiz-calendar-deadline').dataset.value || 'N/A',
+        presupuesto: document.getElementById('wiz-presupuesto').value || 'No especificado'
       };
 
       try {
@@ -1345,6 +1553,10 @@
         <div class="wiz-field"><label for="wiz-name">Nombre</label><input type="text" id="wiz-name" placeholder="Tu nombre"></div>
         <div class="wiz-field" style="margin-top:10px;"><label for="wiz-email">Email</label><input type="email" id="wiz-email" placeholder="tu@email.com"></div>
         <div class="wiz-field" style="margin-top:10px;"><label for="wiz-whatsapp">WhatsApp</label><input type="tel" id="wiz-whatsapp" placeholder="+34 600 000 000"></div>
+        <div class="wiz-field" style="margin-top:10px;">
+          <label>¿Tienes fecha límite para lanzarla? (opcional)</label>
+          <div class="wiz-calendar" id="wiz-calendar-deadline"></div>
+        </div>
         <div class="wiz-consent-row">
           <input type="checkbox" id="wiz-consent">
           <label for="wiz-consent">He leído y acepto la <a href="#privacidad" target="_blank">política de privacidad</a>.</label>
@@ -1358,6 +1570,7 @@
 
   function initWebsiteWizard() {
     initWizardToggles();
+    initCalendar('wiz-calendar-deadline');
 
     document.getElementById('wiz-submit').addEventListener('click', async () => {
       const status = document.getElementById('wiz-status');
@@ -1396,7 +1609,8 @@
         gestor_contenidos: getToggleValue('cms'),
         formulario: formulario,
         conectado_web3forms: formulario === 'si' ? getToggleValue('web3forms') : 'N/A',
-        motivo_envio: formulario === 'si' ? document.getElementById('wiz-form-purpose').value : 'N/A'
+        motivo_envio: formulario === 'si' ? document.getElementById('wiz-form-purpose').value : 'N/A',
+        fecha_limite: document.getElementById('wiz-calendar-deadline').dataset.value || 'N/A'
       };
 
       try {
