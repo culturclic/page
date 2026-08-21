@@ -418,7 +418,10 @@
     position:relative;
     transform:translateY(12px); transition:transform .25s ease, max-width .2s ease;
   }
-  .modal-box.modal-box-lg{max-width:580px;}
+  .modal-box.modal-box-lg{
+    max-width:580px;
+    background:linear-gradient(165deg, #fffaf5 0%, #fdf0e4 40%, #f8dfc7 75%, #f3d2b0 100%);
+  }
   .modal-backdrop.open .modal-box{transform:translateY(0);}
   .modal-close{
     position:absolute; top:16px; right:16px; width:32px; height:32px;
@@ -488,8 +491,9 @@
 
   /* ---------- INLINE CALENDAR ---------- */
   .wiz-calendar{
-    background:var(--cream); border:1px solid var(--line); border-radius:12px;
+    background:#ffffff; border:1px solid rgba(168,90,64,.2); border-radius:12px;
     padding:14px 16px 12px; max-width:280px; margin:0 auto;
+    box-shadow:0 2px 8px rgba(168,90,64,.1);
   }
   .cal-header{
     display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;
@@ -534,14 +538,15 @@
     text-transform:uppercase; color:var(--ink-soft); display:block; margin-bottom:6px;
   }
   .wiz-field input, .wiz-field textarea, .wiz-field select{
-    width:100%; background:var(--cream); border:1px solid var(--line);
+    width:100%; background:#ffffff; border:1px solid rgba(168,90,64,.2);
     border-radius:10px; padding:10px 12px; color:var(--ink);
-    font-family:'Inter', sans-serif; font-size:14px; transition:border-color .2s ease;
+    font-family:'Inter', sans-serif; font-size:14px; transition:border-color .2s ease, box-shadow .2s ease;
+    box-shadow:0 1px 3px rgba(168,90,64,.08);
   }
   .wiz-field textarea{min-height:90px; resize:vertical;}
   .wiz-mini-textarea{min-height:50px !important;}
   .wiz-field input:focus, .wiz-field textarea:focus, .wiz-field select:focus{
-    outline:none; border-color:var(--terracotta-dark);
+    outline:none; border-color:var(--terracotta-dark); box-shadow:0 0 0 3px rgba(204,120,92,.15);
   }
   #wiz-submit{margin-top:24px; width:100%; justify-content:center; display:inline-flex;}
   #wiz-status{margin-top:10px; font-size:12.5px; font-family:'JetBrains Mono', monospace; text-align:center;}
@@ -1281,7 +1286,8 @@
         </div>
 
         <div class="wiz-field" id="wiz-block-medida" style="margin-top:14px;">
-          ${buildQuestionFields(LANDING_DESIGN_Q, 'wiz-medida')}
+          <label for="wiz-medida-answer">Cuéntanos brevemente qué necesitas</label>
+          <textarea id="wiz-medida-answer" placeholder="Objetivo, a quién va dirigida, qué no puede faltar, alguna referencia que te guste..."></textarea>
         </div>
 
         <div class="wiz-field" id="wiz-block-copiar" style="margin-top:14px; display:none;">
@@ -1326,34 +1332,6 @@
         <div class="wiz-toggle wiz-toggle-sm" data-toggle-group="formulario">
           <button type="button" class="wiz-opt active" data-value="si">Sí</button>
           <button type="button" class="wiz-opt" data-value="no">✕ No</button>
-        </div>
-
-        <div id="wiz-block-form-extra" style="margin-top:16px;">
-          <div class="wiz-info-row">
-            <span class="wiz-label" style="margin-bottom:0;">¿Se conecta a Web3Forms?</span>
-            <button type="button" class="wiz-info-btn" id="wiz-web3forms-info" aria-label="¿Qué es Web3Forms?">?</button>
-          </div>
-          <div class="wiz-toggle wiz-toggle-sm" data-toggle-group="web3forms" style="margin-top:8px;">
-            <button type="button" class="wiz-opt active" data-value="si">Sí</button>
-            <button type="button" class="wiz-opt" data-value="no">No</button>
-          </div>
-          <div id="wiz-web3forms-explain" class="wiz-info-box" style="display:none;">
-            Web3Forms es el servicio que recibe lo que la gente escribe en tu formulario y te lo manda directo al email, sin necesitar un servidor propio. El primer email de destino es <strong>gratis</strong>; a partir del segundo tiene un coste aproximado de <strong>8€/mes</strong>.
-          </div>
-
-          <div class="wiz-field" style="margin-top:14px;">
-            <label for="wiz-form-purpose">¿Qué quieres hacer con los datos que te llegan?</label>
-            <select id="wiz-form-purpose">
-              <option value="Leads">Leads — quiero la lista de contactos interesados para llamarles o escribirles yo</option>
-              <option value="Reservas / citas">Reservas / citas — la gente reserva directamente un hueco</option>
-              <option value="Contacto general">Contacto general — dudas o consultas, sin más</option>
-              <option value="Otro">Otro</option>
-            </select>
-          </div>
-          <div class="wiz-field" style="margin-top:10px;">
-            <label for="wiz-form-purpose-detalle">Cuéntanos un poco más (opcional)</label>
-            <textarea id="wiz-form-purpose-detalle" placeholder="Cualquier detalle extra sobre qué debe pasar cuando alguien rellena el formulario..."></textarea>
-          </div>
         </div>
       </div>
 
@@ -1458,46 +1436,6 @@
     renderCalendar(containerId, now);
   }
 
-  const LANDING_DESIGN_Q = [
-    '¿Cuál es el objetivo principal? (vender, captar leads, reservar visita...)',
-    '¿A quién va dirigida?',
-    '¿Qué quieres que haga el visitante al entrar?',
-    '¿Ya tienes colores/tipografía de marca o lo montamos desde cero?',
-    '¿Qué no puede faltar? (precio, características, testimonios, fotos...)',
-    '¿Alguna referencia que te guste?'
-  ];
-  const WEBSITE_DESIGN_Q = [
-    '¿Cuál es el objetivo principal del sitio?',
-    '¿A quién va dirigido?',
-    '¿Ya tienes colores/tipografía de marca o lo montamos desde cero?',
-    '¿Alguna referencia que te guste?'
-  ];
-  const WEBSITE_ABOUT_Q = [
-    '¿Cuántas páginas o secciones necesitas? (Inicio, Nosotros, Servicios, Contacto, Blog...)',
-    '¿Tienes el contenido (textos) listo o hay que redactarlo?',
-    '¿Necesitas dominio y hosting, o ya los tienes?',
-    '¿En cuántos idiomas la necesitas?'
-  ];
-
-  function buildQuestionFields(questions, idPrefix) {
-    return questions.map((q, i) => `
-      <div class="wiz-field" style="margin-top:${i === 0 ? '14' : '10'}px;">
-        <label for="${idPrefix}-q${i}">${q}</label>
-        <textarea id="${idPrefix}-q${i}" class="wiz-mini-textarea" placeholder="Tu respuesta..."></textarea>
-      </div>`).join('');
-  }
-
-  function gatherAnswers(questions, idPrefix) {
-    return questions
-      .map((q, i) => {
-        const el = document.getElementById(`${idPrefix}-q${i}`);
-        const val = el ? el.value.trim() : '';
-        return val ? `${q}\n${val}` : null;
-      })
-      .filter(Boolean)
-      .join('\n\n');
-  }
-
   function getToggleValue(group) {
     const active = svcModalContent.querySelector(`[data-toggle-group="${group}"] .wiz-opt.active`);
     return active ? active.dataset.value : null;
@@ -1573,15 +1511,12 @@
         pagina_web_actual: document.getElementById('wiz-web-actual').value || 'N/A',
         diseno: design,
         detalle_diseno: design === 'a-medida'
-          ? gatherAnswers(LANDING_DESIGN_Q, 'wiz-medida')
+          ? document.getElementById('wiz-medida-answer').value
           : document.getElementById('wiz-copiar-link').value,
         video: getToggleValue('video'),
         imagen: imagen,
         tipo_galeria: imagen === 'si' ? getToggleValue('galeria-tipo') : 'N/A',
         formulario: formulario,
-        conectado_web3forms: formulario === 'si' ? getToggleValue('web3forms') : 'N/A',
-        motivo_envio: formulario === 'si' ? document.getElementById('wiz-form-purpose').value : 'N/A',
-        motivo_envio_detalle: formulario === 'si' ? document.getElementById('wiz-form-purpose-detalle').value : 'N/A',
         fecha_limite: document.getElementById('wiz-calendar-deadline').dataset.value || 'N/A',
         presupuesto: document.getElementById('wiz-presupuesto').value || 'No especificado'
       };
@@ -1626,7 +1561,8 @@
         </div>
 
         <div class="wiz-field" id="wiz-block-medida" style="margin-top:14px;">
-          ${buildQuestionFields(WEBSITE_DESIGN_Q, 'wiz-medida')}
+          <label for="wiz-medida-answer">Cuéntanos brevemente qué necesitas</label>
+          <textarea id="wiz-medida-answer" placeholder="Objetivo del sitio, a quién va dirigido, alguna referencia que te guste..."></textarea>
         </div>
 
         <div class="wiz-field" id="wiz-block-copiar" style="margin-top:14px; display:none;">
@@ -1644,7 +1580,10 @@
 
       <div class="wiz-section">
         <span class="wiz-label">Sobre tu web</span>
-        ${buildQuestionFields(WEBSITE_ABOUT_Q, 'wiz-web')}
+        <div class="wiz-field">
+          <label for="wiz-web-answer">Cuéntanos brevemente</label>
+          <textarea id="wiz-web-answer" placeholder="Cuántas páginas necesitas, si tienes el contenido listo, dominio/hosting, idiomas..."></textarea>
+        </div>
       </div>
 
       <div class="wiz-section">
@@ -1684,34 +1623,6 @@
         <div class="wiz-toggle wiz-toggle-sm" data-toggle-group="formulario">
           <button type="button" class="wiz-opt active" data-value="si">Sí</button>
           <button type="button" class="wiz-opt" data-value="no">✕ No</button>
-        </div>
-
-        <div id="wiz-block-form-extra" style="margin-top:16px;">
-          <div class="wiz-info-row">
-            <span class="wiz-label" style="margin-bottom:0;">¿Se conecta a Web3Forms?</span>
-            <button type="button" class="wiz-info-btn" id="wiz-web3forms-info" aria-label="¿Qué es Web3Forms?">?</button>
-          </div>
-          <div class="wiz-toggle wiz-toggle-sm" data-toggle-group="web3forms" style="margin-top:8px;">
-            <button type="button" class="wiz-opt active" data-value="si">Sí</button>
-            <button type="button" class="wiz-opt" data-value="no">No</button>
-          </div>
-          <div id="wiz-web3forms-explain" class="wiz-info-box" style="display:none;">
-            Web3Forms es el servicio que recibe lo que la gente escribe en tu formulario y te lo manda directo al email, sin necesitar un servidor propio. El primer email de destino es <strong>gratis</strong>; a partir del segundo tiene un coste aproximado de <strong>8€/mes</strong>.
-          </div>
-
-          <div class="wiz-field" style="margin-top:14px;">
-            <label for="wiz-form-purpose">¿Qué quieres hacer con los datos que te llegan?</label>
-            <select id="wiz-form-purpose">
-              <option value="Leads">Leads — quiero la lista de contactos interesados para llamarles o escribirles yo</option>
-              <option value="Reservas / citas">Reservas / citas — la gente reserva directamente un hueco</option>
-              <option value="Contacto general">Contacto general — dudas o consultas, sin más</option>
-              <option value="Otro">Otro</option>
-            </select>
-          </div>
-          <div class="wiz-field" style="margin-top:10px;">
-            <label for="wiz-form-purpose-detalle">Cuéntanos un poco más (opcional)</label>
-            <textarea id="wiz-form-purpose-detalle" placeholder="Cualquier detalle extra sobre qué debe pasar cuando alguien rellena el formulario..."></textarea>
-          </div>
         </div>
       </div>
 
@@ -1776,17 +1687,14 @@
         pagina_web_actual: document.getElementById('wiz-web-actual').value || 'N/A',
         diseno: design,
         detalle_diseno: design === 'a-medida'
-          ? gatherAnswers(WEBSITE_DESIGN_Q, 'wiz-medida')
+          ? document.getElementById('wiz-medida-answer').value
           : document.getElementById('wiz-copiar-link').value,
-        detalle_web: gatherAnswers(WEBSITE_ABOUT_Q, 'wiz-web'),
+        detalle_web: document.getElementById('wiz-web-answer').value,
         video: getToggleValue('video'),
         imagen: imagen,
         tipo_galeria: imagen === 'si' ? getToggleValue('galeria-tipo') : 'N/A',
         gestor_contenidos: getToggleValue('cms'),
         formulario: formulario,
-        conectado_web3forms: formulario === 'si' ? getToggleValue('web3forms') : 'N/A',
-        motivo_envio: formulario === 'si' ? document.getElementById('wiz-form-purpose').value : 'N/A',
-        motivo_envio_detalle: formulario === 'si' ? document.getElementById('wiz-form-purpose-detalle').value : 'N/A',
         presupuesto: document.getElementById('wiz-presupuesto').value || 'No especificado',
         fecha_limite: document.getElementById('wiz-calendar-deadline').dataset.value || 'N/A'
       };
