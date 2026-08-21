@@ -368,7 +368,6 @@
     transition:background .2s ease, color .2s ease, border-color .2s ease;
   }
   .wiz-opt.active{background:var(--terracotta-dark); color:var(--cream); border-color:var(--terracotta-dark);}
-  .wiz-questions{font-size:13px; color:var(--ink-soft); line-height:1.65; margin:0 0 10px 18px;}
   .wiz-info-row{display:flex; align-items:center; gap:8px;}
   .wiz-info-btn{
     width:19px; height:19px; border-radius:50%; border:1px solid var(--terracotta-dark);
@@ -457,6 +456,7 @@
     font-family:'Inter', sans-serif; font-size:14px; transition:border-color .2s ease;
   }
   .wiz-field textarea{min-height:90px; resize:vertical;}
+  .wiz-mini-textarea{min-height:50px !important;}
   .wiz-field input:focus, .wiz-field textarea:focus, .wiz-field select:focus{
     outline:none; border-color:var(--terracotta-dark);
   }
@@ -1170,16 +1170,7 @@
         </div>
 
         <div class="wiz-field" id="wiz-block-medida" style="margin-top:14px;">
-          <ul class="wiz-questions">
-            <li>¿Cuál es el objetivo principal? (vender, captar leads, reservar visita...)</li>
-            <li>¿A quién va dirigida?</li>
-            <li>¿Qué quieres que haga el visitante al entrar?</li>
-            <li>¿Ya tienes colores/tipografía de marca o lo montamos desde cero?</li>
-            <li>¿Qué no puede faltar? (precio, características, testimonios, fotos...)</li>
-            <li>¿Alguna referencia que te guste?</li>
-          </ul>
-          <label for="wiz-medida-answer">Tu respuesta</label>
-          <textarea id="wiz-medida-answer" placeholder="Escribe aquí, con tus palabras..."></textarea>
+          ${buildQuestionFields(LANDING_DESIGN_Q, 'wiz-medida')}
         </div>
 
         <div class="wiz-field" id="wiz-block-copiar" style="margin-top:14px; display:none;">
@@ -1356,6 +1347,46 @@
     renderCalendar(containerId, now);
   }
 
+  const LANDING_DESIGN_Q = [
+    '¿Cuál es el objetivo principal? (vender, captar leads, reservar visita...)',
+    '¿A quién va dirigida?',
+    '¿Qué quieres que haga el visitante al entrar?',
+    '¿Ya tienes colores/tipografía de marca o lo montamos desde cero?',
+    '¿Qué no puede faltar? (precio, características, testimonios, fotos...)',
+    '¿Alguna referencia que te guste?'
+  ];
+  const WEBSITE_DESIGN_Q = [
+    '¿Cuál es el objetivo principal del sitio?',
+    '¿A quién va dirigido?',
+    '¿Ya tienes colores/tipografía de marca o lo montamos desde cero?',
+    '¿Alguna referencia que te guste?'
+  ];
+  const WEBSITE_ABOUT_Q = [
+    '¿Cuántas páginas o secciones necesitas? (Inicio, Nosotros, Servicios, Contacto, Blog...)',
+    '¿Tienes el contenido (textos) listo o hay que redactarlo?',
+    '¿Necesitas dominio y hosting, o ya los tienes?',
+    '¿En cuántos idiomas la necesitas?'
+  ];
+
+  function buildQuestionFields(questions, idPrefix) {
+    return questions.map((q, i) => `
+      <div class="wiz-field" style="margin-top:${i === 0 ? '14' : '10'}px;">
+        <label for="${idPrefix}-q${i}">${q}</label>
+        <textarea id="${idPrefix}-q${i}" class="wiz-mini-textarea" placeholder="Tu respuesta..."></textarea>
+      </div>`).join('');
+  }
+
+  function gatherAnswers(questions, idPrefix) {
+    return questions
+      .map((q, i) => {
+        const el = document.getElementById(`${idPrefix}-q${i}`);
+        const val = el ? el.value.trim() : '';
+        return val ? `${q}\n${val}` : null;
+      })
+      .filter(Boolean)
+      .join('\n\n');
+  }
+
   function getToggleValue(group) {
     const active = svcModalContent.querySelector(`[data-toggle-group="${group}"] .wiz-opt.active`);
     return active ? active.dataset.value : null;
@@ -1431,7 +1462,7 @@
         pagina_web_actual: document.getElementById('wiz-web-actual').value || 'N/A',
         diseno: design,
         detalle_diseno: design === 'a-medida'
-          ? document.getElementById('wiz-medida-answer').value
+          ? gatherAnswers(LANDING_DESIGN_Q, 'wiz-medida')
           : document.getElementById('wiz-copiar-link').value,
         video: getToggleValue('video'),
         imagen: imagen,
@@ -1484,14 +1515,7 @@
         </div>
 
         <div class="wiz-field" id="wiz-block-medida" style="margin-top:14px;">
-          <ul class="wiz-questions">
-            <li>¿Cuál es el objetivo principal del sitio?</li>
-            <li>¿A quién va dirigido?</li>
-            <li>¿Ya tienes colores/tipografía de marca o lo montamos desde cero?</li>
-            <li>¿Alguna referencia que te guste?</li>
-          </ul>
-          <label for="wiz-medida-answer">Tu respuesta</label>
-          <textarea id="wiz-medida-answer" placeholder="Escribe aquí, con tus palabras..."></textarea>
+          ${buildQuestionFields(WEBSITE_DESIGN_Q, 'wiz-medida')}
         </div>
 
         <div class="wiz-field" id="wiz-block-copiar" style="margin-top:14px; display:none;">
@@ -1509,16 +1533,7 @@
 
       <div class="wiz-section">
         <span class="wiz-label">Sobre tu web</span>
-        <ul class="wiz-questions">
-          <li>¿Cuántas páginas o secciones necesitas? (Inicio, Nosotros, Servicios, Contacto, Blog...)</li>
-          <li>¿Tienes el contenido (textos) listo o hay que redactarlo?</li>
-          <li>¿Necesitas dominio y hosting, o ya los tienes?</li>
-          <li>¿En cuántos idiomas la necesitas?</li>
-        </ul>
-        <div class="wiz-field">
-          <label for="wiz-web-answer">Tu respuesta</label>
-          <textarea id="wiz-web-answer" placeholder="Escribe aquí, con tus palabras..."></textarea>
-        </div>
+        ${buildQuestionFields(WEBSITE_ABOUT_Q, 'wiz-web')}
       </div>
 
       <div class="wiz-section">
@@ -1650,9 +1665,9 @@
         pagina_web_actual: document.getElementById('wiz-web-actual').value || 'N/A',
         diseno: design,
         detalle_diseno: design === 'a-medida'
-          ? document.getElementById('wiz-medida-answer').value
+          ? gatherAnswers(WEBSITE_DESIGN_Q, 'wiz-medida')
           : document.getElementById('wiz-copiar-link').value,
-        detalle_web: document.getElementById('wiz-web-answer').value,
+        detalle_web: gatherAnswers(WEBSITE_ABOUT_Q, 'wiz-web'),
         video: getToggleValue('video'),
         imagen: imagen,
         tipo_galeria: imagen === 'si' ? getToggleValue('galeria-tipo') : 'N/A',
