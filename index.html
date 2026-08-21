@@ -465,6 +465,10 @@
     opacity:0; white-space:pre-wrap;
   }
   .terminal-line::before{content:'> '; color:var(--terracotta);}
+  .terminal-line-icon{
+    width:14px; height:14px; object-fit:contain; display:inline-block;
+    vertical-align:-2px; margin-right:6px;
+  }
   .terminal.open .terminal-line{animation:type-in .4s ease forwards;}
 
   @keyframes type-in{ to{opacity:1;} }
@@ -552,16 +556,23 @@
 
   /* ---------- PRIVACY / RGPD ---------- */
   .privacy-section{
-    max-width:640px; margin:0 auto; padding:48px 28px 8px; text-align:center;
+    max-width:640px; margin:0 auto; padding:32px 28px; text-align:center;
     background:var(--ink); color:#c9bfae;
   }
-  .privacy-section h4{
+  .privacy-details summary{
     font-family:'Fraunces', serif; font-weight:600; font-size:16px; color:var(--cream);
-    margin-bottom:10px;
+    cursor:pointer; list-style:none; display:inline-flex; align-items:center; gap:8px;
   }
-  .privacy-section p{
-    font-size:12.5px; line-height:1.65; margin-bottom:10px;
+  .privacy-details summary::-webkit-details-marker{display:none;}
+  .privacy-details summary::after{
+    content:'⌄'; color:var(--terracotta); font-size:15px;
+    transition:transform .25s ease;
   }
+  .privacy-details[open] summary::after{transform:rotate(180deg);}
+  .privacy-details p{
+    font-size:12.5px; line-height:1.65; margin:14px 0 0; text-align:left;
+  }
+  .privacy-details p + p{margin-top:10px;}
   .privacy-section a{color:var(--terracotta);}
   .consent-row{
     margin-top:4px; display:flex; align-items:flex-start; gap:10px;
@@ -588,6 +599,7 @@
   @media (max-width:560px){
     .hero-meta{gap:22px;}
     .card-top{flex-direction:column;}
+    h1{max-width:100%; font-size:clamp(30px, 8vw, 44px);}
   }
 
   @media (prefers-reduced-motion: reduce){
@@ -804,9 +816,11 @@
 </section>
 
 <div class="privacy-section" id="privacidad">
-  <h4>Protección de datos</h4>
-  <p>Responsable: CulturClic (Fernando Benítez). Los datos que nos facilitas en estos formularios se usan únicamente para responder a tu consulta y gestionar la relación comercial derivada, conforme al Reglamento (UE) 2016/679 (RGPD).</p>
-  <p>Puedes ejercer tus derechos de acceso, rectificación, supresión y oposición escribiendo a <a href="mailto:hola@culturclic.com">hola@culturclic.com</a>. No compartimos tus datos con terceros salvo obligación legal.</p>
+  <details class="privacy-details">
+    <summary>Protección de datos</summary>
+    <p>Responsable: CulturClic (Fernando Benítez). Los datos que nos facilitas en estos formularios se usan únicamente para responder a tu consulta y gestionar la relación comercial derivada, conforme al Reglamento (UE) 2016/679 (RGPD).</p>
+    <p>Puedes ejercer tus derechos de acceso, rectificación, supresión y oposición escribiendo a <a href="mailto:hola@culturclic.com">hola@culturclic.com</a>. No compartimos tus datos con terceros salvo obligación legal.</p>
+  </details>
 </div>
 
 <footer>
@@ -841,10 +855,10 @@
       desc: "Sitio principal de la consultora: hero en vídeo aéreo, equipo, quiz de inversión y wizard de captación de leads.",
       url: "https://ancor-invesments.github.io/ancorsite/",
       log: [
-        "single-file HTML/CSS/JS con preloader y vídeo aéreo de fondo",
-        "tarjetas de equipo con vídeo al hacer hover",
-        "quiz de inversión interactivo para cualificar al lead",
-        "wizard de captación integrado en varios pasos"
+        { icon: "video", text: "single-file HTML/CSS/JS con preloader y vídeo aéreo de fondo" },
+        { icon: "video", text: "tarjetas de equipo con vídeo al hacer hover" },
+        { icon: "quiz-interactivo", text: "quiz de inversión interactivo para cualificar al lead" },
+        { icon: "formulario", text: "wizard de captación integrado en varios pasos" }
       ]
     },
     {
@@ -852,14 +866,14 @@
       title: "El Sindicato de Monstruos",
       tags: ["a-medida", "responsive", "wordpress", "google-sheets", "web3forms", "analitica", "hosting-servidor", "leads"],
       desc: "Sitio corporativo de 6 páginas para presentar los espectáculos de la compañía, con estética oscura y dorada.",
-      url: "https://www.elsindicatodemosntruos.com",
+      url: "https://elsindicatodemonstruos.com/#inicio",
       log: [
-        "migración completa de WordPress a HTML/CSS/JS estático",
-        "6 páginas con animaciones y tipografía a medida (Bebas Neue + Inter)",
-        "gestión de leads sincronizada en tiempo real con Google Sheets",
-        "formulario de contacto vía Web3Forms",
-        "analítica propia con Google Analytics",
-        "deploy manual vía FTP a servidor Hostalia"
+        { icon: "wordpress", text: "migración completa de WordPress a HTML/CSS/JS estático" },
+        { icon: "a-medida", text: "6 páginas con animaciones y tipografía a medida (Bebas Neue + Inter)" },
+        { icon: "google-sheets", text: "gestión de leads sincronizada en tiempo real con Google Sheets" },
+        { icon: "web3forms", text: "formulario de contacto vía Web3Forms" },
+        { icon: "analitica", text: "analítica propia con Google Analytics" },
+        { icon: "hosting-servidor", text: "deploy manual vía FTP a servidor Hostalia" }
       ]
     },
     {
@@ -869,10 +883,10 @@
       desc: "Herramienta para armar el presupuesto de un espectáculo en minutos, sin llamadas ni idas y vueltas por email.",
       url: "https://elsindicato.github.io/presupuesto/",
       log: [
-        "selector dinámico de espectáculos con cálculo automático",
-        "diseño responsive pensado para móvil",
-        "conectado al mismo ecosistema de leads que el sitio principal",
-        "salida lista para enviar o descargar"
+        { icon: "script", text: "selector dinámico de espectáculos con cálculo automático" },
+        { icon: "responsive", text: "diseño responsive pensado para móvil" },
+        { icon: "leads", text: "conectado al mismo ecosistema de leads que el sitio principal" },
+        { icon: "formulario", text: "salida lista para enviar o descargar" }
       ]
     },
     {
@@ -882,10 +896,10 @@
       desc: "Landing de captación para suelos y oportunidades de inversión en Barcelona y la corona metropolitana.",
       url: "https://ancor-invesments.github.io/suelosbarcelona/",
       log: [
-        "sistema de marca Ancor Investments aplicado (navy, oro, crema)",
-        "estructura orientada a captar leads de perfil inversor",
-        "hosting estático en GitHub Pages",
-        "integrable directamente con campañas de Meta Ads"
+        { icon: "a-medida", text: "sistema de marca Ancor Investments aplicado (navy, oro, crema)" },
+        { icon: "leads", text: "estructura orientada a captar leads de perfil inversor" },
+        { icon: "github", text: "hosting estático en GitHub Pages" },
+        { icon: "meta", text: "integrable directamente con campañas de Meta Ads" }
       ]
     },
     {
@@ -895,10 +909,10 @@
       desc: "Ficha comercial de un local con licencia sanitaria/estética activa, en alquiler, sin traspaso de por medio.",
       url: "https://ancor-invesments.github.io/aribau01/",
       log: [
-        "ficha de producto individual optimizada para conversión",
-        "copy dirigido a un perfil muy concreto: clínicas y medicina estética",
-        "dirección omitida del texto público para proteger la exclusiva",
-        "pensada para tráfico frío proveniente de Meta Ads"
+        { icon: "landing", text: "ficha de producto individual optimizada para conversión" },
+        { icon: "a-medida", text: "copy dirigido a un perfil muy concreto: clínicas y medicina estética" },
+        { icon: "privacidad-confidencial", text: "dirección omitida del texto público para proteger la exclusiva" },
+        { icon: "meta", text: "pensada para tráfico frío proveniente de Meta Ads" }
       ]
     },
     {
@@ -908,10 +922,10 @@
       desc: "Landing de acceso restringido para un activo de suelo confidencial: 3.600 m², 28 unidades proyectadas.",
       url: "https://ancor-invesments.github.io/NDA/",
       log: [
-        "acceso controlado a información sensible del activo",
-        "footer de confidencialidad en tres idiomas",
-        "diseñada exclusivamente para inversores cualificados",
-        "vinculada a una newsletter propia con GIF animado embebido"
+        { icon: "privacidad-confidencial", text: "acceso controlado a información sensible del activo" },
+        { icon: "idiomas-multilenguaje", text: "footer de confidencialidad en tres idiomas" },
+        { icon: "leads", text: "diseñada exclusivamente para inversores cualificados" },
+        { icon: "email", text: "vinculada a una newsletter propia con GIF animado embebido" }
       ]
     },
     {
@@ -921,10 +935,10 @@
       desc: "Landing personal como asesor inmobiliario independiente, separada de la marca Ancor Investments.",
       url: "https://fer-benitez.github.io/consultor/",
       log: [
-        "dominio y formulario propios (Web3Forms con key independiente)",
-        "copy que conecta el perfil de teatro de calle con el diferencial inmobiliario",
-        "hosting en GitHub Pages bajo cuenta personal",
-        "pensada como pieza central del rebranding de LinkedIn"
+        { icon: "web3forms", text: "dominio y formulario propios (Web3Forms con key independiente)" },
+        { icon: "a-medida", text: "copy que conecta el perfil de teatro de calle con el diferencial inmobiliario" },
+        { icon: "github", text: "hosting en GitHub Pages bajo cuenta personal" },
+        { icon: "linkedin", text: "pensada como pieza central del rebranding de LinkedIn" }
       ]
     },
     {
@@ -934,11 +948,11 @@
       desc: "Dashboard interno de valoración para AG Núñez, agencia inmobiliaria consolidada en Barcelona, parte del sistema de screening de inquilinos multilingüe.",
       url: "https://fer-benitez.github.io/paneldevaloracion1234567890/",
       log: [
-        "CRM interno de valoración a medida para una agencia consolidada",
-        "integración con Cloudinary para gestión de documentación e imágenes",
-        "formulario de intake multilingüe",
-        "pensado para uso interno del equipo, no cara al cliente final",
-        "lógica de scoring propia para la valoración de cada solicitud"
+        { icon: "crm", text: "CRM interno de valoración a medida para una agencia consolidada" },
+        { icon: "cloudinary", text: "integración con Cloudinary para gestión de documentación e imágenes" },
+        { icon: "idiomas-multilenguaje", text: "formulario de intake multilingüe" },
+        { icon: "automatizacion", text: "pensado para uso interno del equipo, no cara al cliente final" },
+        { icon: "scoring-medidor", text: "lógica de scoring propia para la valoración de cada solicitud" }
       ]
     },
     {
@@ -948,10 +962,10 @@
       desc: "Plantilla de ficha para un piso en venta o alquiler, usada como banco de pruebas antes de lanzarla con datos reales.",
       url: "https://fer-benitez.github.io/pisoprueba/",
       log: [
-        "estructura reutilizable para fichas de piso individuales",
-        "pensada para iterar rápido antes de publicar un anuncio real",
-        "hosting en GitHub Pages bajo cuenta personal",
-        "base para futuras fichas de propiedades residenciales"
+        { icon: "landing", text: "estructura reutilizable para fichas de piso individuales" },
+        { icon: "a-medida", text: "pensada para iterar rápido antes de publicar un anuncio real" },
+        { icon: "github", text: "hosting en GitHub Pages bajo cuenta personal" },
+        { icon: "script", text: "base para futuras fichas de propiedades residenciales" }
       ]
     },
     {
@@ -961,10 +975,10 @@
       desc: "Ficha de un piso en El Gòtic, Barcelona, con galería y datos clave pensada para tráfico de campaña.",
       url: "https://fer-benitez.github.io/consultor/santa-anna.html",
       log: [
-        "galería de imágenes optimizada para carga rápida",
-        "ficha técnica clara: superficie, distribución y precio",
-        "integrada en el mismo sistema de diseño de la marca personal",
-        "pensada para recibir tráfico directo desde Meta Ads"
+        { icon: "imagen", text: "galería de imágenes optimizada para carga rápida" },
+        { icon: "landing", text: "ficha técnica clara: superficie, distribución y precio" },
+        { icon: "pagina-web", text: "integrada en el mismo sistema de diseño de la marca personal" },
+        { icon: "meta", text: "pensada para recibir tráfico directo desde Meta Ads" }
       ]
     },
     {
@@ -974,10 +988,10 @@
       desc: "Formulario de entrada para propietarios que quieren vender o alquilar, con selector visual del tipo de activo.",
       url: "https://fer-benitez.github.io/consultor/captacion.html",
       log: [
-        "selector visual de tipo de propiedad (piso, local, suelo...)",
-        "consentimiento RGPD integrado en el propio formulario",
-        "pensado como puerta de entrada para nuevos mandatos",
-        "conectado al mismo flujo de leads que el resto del sitio"
+        { icon: "formulario", text: "selector visual de tipo de propiedad (piso, local, suelo...)" },
+        { icon: "privacidad-confidencial", text: "consentimiento RGPD integrado en el propio formulario" },
+        { icon: "leads", text: "pensado como puerta de entrada para nuevos mandatos" },
+        { icon: "crm", text: "conectado al mismo flujo de leads que el resto del sitio" }
       ]
     }
   ];
@@ -1477,7 +1491,7 @@
       <div class="terminal">
         <div class="terminal-inner">
           <div class="terminal-bar"><span></span><span></span><span></span></div>
-          ${p.log.map((l, idx) => `<div class="terminal-line" style="animation-delay:${idx * 90}ms">${l}</div>`).join('')}
+          ${p.log.map((l, idx) => `<div class="terminal-line" style="animation-delay:${idx * 90}ms"><img class="terminal-line-icon" src="${ICONS[l.icon]}" alt="${l.icon}">${l.text}</div>`).join('')}
           <span class="term-cursor"></span>
         </div>
       </div>
@@ -1582,9 +1596,9 @@
         const span = document.createElement('span');
         span.className = 'ch scrambling';
         const isSpace = ch === ' ';
-        span.textContent = isSpace ? '\u00A0' : randomChar();
+        span.textContent = isSpace ? ' ' : randomChar();
         g.el.appendChild(span);
-        items.push({ span, finalChar: isSpace ? '\u00A0' : ch, isSpace, delay: idx * 20 });
+        items.push({ span, finalChar: isSpace ? ' ' : ch, isSpace, delay: idx * 20 });
         idx++;
       });
     });
