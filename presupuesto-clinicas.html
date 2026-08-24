@@ -298,6 +298,10 @@
           </div>
         </div>
 
+        <div class="f-row">
+          <label>¿Cuál es tu página web actual? <span class="opt">(si no tienes, déjalo en blanco)</span></label>
+          <input type="text" name="pagina_web_actual" placeholder="www.tunegocio.com">
+        </div>
         <div class="f-grid2">
           <div class="f-row">
             <label>Nombre completo</label>
@@ -603,6 +607,7 @@
         if (selectedSet.has(date)) selectedSet.delete(date);
         else selectedSet.add(date);
         container._selectedDates = selectedSet;
+        syncHiddenDias(containerId);
         renderMultiCalendar(containerId, container._viewDate || viewDate);
       });
     });
@@ -610,9 +615,20 @@
     if (clearBtn) {
       clearBtn.addEventListener('click', () => {
         container._selectedDates = new Set();
+        syncHiddenDias(containerId);
         renderMultiCalendar(containerId, container._viewDate || viewDate);
       });
     }
+  }
+
+  // Mantiene el campo oculto "dias_preferidos" siempre sincronizado con lo marcado en el calendario,
+  // en el momento del clic (no solo al enviar), para que nunca falte en el email.
+  function syncHiddenDias(containerId) {
+    const container = document.getElementById(containerId);
+    const hiddenDias = document.getElementById('hidden-dias');
+    if (!container || !hiddenDias) return;
+    const dates = container._selectedDates ? Array.from(container._selectedDates).sort() : [];
+    hiddenDias.value = dates.map(calFormatDisplay).join(', ');
   }
 
   function initMultiCalendar(containerId) {
@@ -645,10 +661,8 @@
       if (hiddenInput) hiddenInput.value = checked.join(', ');
     });
 
-    // Empaquetar fechas del calendario
-    const calContainer = document.getElementById('lead-calendar-multi');
-    const dates = (calContainer && calContainer._selectedDates) ? Array.from(calContainer._selectedDates).sort() : [];
-    document.getElementById('hidden-dias').value = dates.map(calFormatDisplay).join(', ');
+    // Empaquetar fechas del calendario (por si el navegador no disparó el sync en el último clic)
+    syncHiddenDias('lead-calendar-multi');
 
     submitBtn.disabled = true;
     status.textContent = 'Enviando...';
